@@ -5,7 +5,7 @@
 rm(list=ls())
 
 # Set Working Directory & Load DataSet
-setwd('/home/ccirelli2/Desktop/GSU/2019_Spring/Datasets')
+setwd('/home/ccirelli2/Desktop/GSU/2019_Spring/Spring_2019_ML_Course/Datasets')
 dat <- read.csv('Advertising.csv', header = TRUE)
 
 # Plot Sales Versus TV Spending
@@ -65,8 +65,18 @@ hist(x)
 ### Scatter Plot Matrix:  pairs()
 pairs(dat)
 
+### Identify() - Interactive Plots
+# Call plot and then identify.  Pass to identify x, y and then the data for which we would like printed when we click on it. 
+# Once you hit the finish button you will see the values on the plot and printed to stdout. 
+plot(dat$sales, dat$TV)
+identify(dat$sales, dat$TV, dat$sales)
 
 
+
+### Save Command History (savehistory())
+# saves a copy of all of our commands made in R during this session
+# at the next session run loadhistory() to load this history. 
+savehistory()
 
 
 
