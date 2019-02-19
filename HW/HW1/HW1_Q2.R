@@ -1,4 +1,4 @@
-# Question 2____________________________________________________________________________________
+# QUESTION 2____________________________________________________________________________________________________________
 'Newtons law:   states that every particle attracks every other particle
 with a force which is directly proportional to the product of their
 masses and inversely proportional to the square of the distance
@@ -214,10 +214,13 @@ Euclidean.dist.lm3.log
 print(c('Compare Euclidean distances for M1-M3', 'M3 =>', Euclidean.dist.lm3.log, 'M2 =>', Euclidean.dist.lm.log, 'M1', Euclidean.dist.lm1.multi))
 'Results:  M3 has the lowest Euclidean distance of the 3 models'
 
+# I.) directly proportional to the product of their masses and inversely proportional to the square of the distance between their centers (reference: Wikipedia)
 
 
+# Can you find the connection between M2 and the original Newton's law of gravity. 
+'Not clear what the professor is looking for here.'
 
-
-
+# J.) REFORMULATE M3 TO A FORM SIMILAR TO NEWTON-LAPLACE
+'Solution:  lm(FORCE ~ Mass1 + Mass2 + Dist + Mass1*Mass2/exp(Dist))'
 
 

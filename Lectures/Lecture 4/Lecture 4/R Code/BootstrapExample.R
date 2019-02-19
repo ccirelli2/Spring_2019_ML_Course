@@ -14,6 +14,7 @@ library(boot)
 
 #####################################################################
 boot.fn=function(data,index)
+boot.fn 
 return(coef(lm(mpg~poly(horsepower ,3) ,data=data,subset=index))[3])
 #####################################################################
 
@@ -27,6 +28,7 @@ print(summary(lm.fit))
 set.seed(1)
 boot.stats = boot(Auto ,boot.fn ,1000)
 print(boot.stats)
+
 # estimated coef = 44.08953
 # Standard error = 4.281842
 
