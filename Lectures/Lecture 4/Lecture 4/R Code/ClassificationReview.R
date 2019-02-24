@@ -43,8 +43,13 @@ print(confint(mod.LR))
 # comparison with the KNN
 set.seed (1)
 feature.inds = c('Lag1','Lag2','Lag3','Lag4','Lag5','Volume')
-knn.pred=knn(MyData.train[,feature.inds],MyData.test[,feature.inds],MyData.train[,'Direction'] ,k=1)
+knn.pred=knn(MyData.train[ , feature.inds], 
+             MyData.test[ , feature.inds], 
+             MyData.train[,'Direction'] ,k=1)
+
+
 print(mean(knn.pred==MyData.test[,'Direction']))
+
 
 # SEE THE CLASSIFICATION LECTURE SAMPLE PROGRAMS FOR INSTANCES OF LDA AND QDA
 

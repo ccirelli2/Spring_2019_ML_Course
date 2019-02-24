@@ -63,7 +63,7 @@ t1* 2.843393 0.2051607   0.8694669'
 
 ## (C) In part (b) how much is your stdv est if you use B = 100?
 #      Do you see a lot of difference in the calculated values?
-'Its not a huge difference, 0.05.  I guess it would depend on the experiment the extent to which this sd er is significant'
+'There is not a huge difference, 0.05.  I guess it would depend on the experiment the extent to which this sd er is significant'
 
 
 

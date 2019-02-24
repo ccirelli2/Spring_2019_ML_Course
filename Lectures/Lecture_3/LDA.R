@@ -3,6 +3,7 @@ graphics.off()
 
 
 options(warn=-1)
+?options
 library(ISLR)
 
 
@@ -26,6 +27,7 @@ lda.fit=lda(Direction~Lag1+Lag2,data=Smarket,subset=train)
 lda.fit
 
 lda.pred=predict(lda.fit, Smarket.2005)
+lda.pred
 # The predict() function returns a list with three elements. The first ele- ment, class, contains LDA’s 
 # predictions about the movement of the market. The second element, posterior, is a matrix whose kth column 
 # contains the posterior probability that the corresponding observation belongs to the kth class
