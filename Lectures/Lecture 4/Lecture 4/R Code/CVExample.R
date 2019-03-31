@@ -19,6 +19,7 @@ for (i in 1:5){
  cv.error[i]=cv.glm(Auto,glm.fit)$delta[1] 
  }
 print(cv.error) # This is the value of CV_n
+plot(cv.error)
 # we see that the second order polynomial presents the desired knee point
 
 # Now doing a 10 fold CV:
@@ -29,7 +30,7 @@ for (i in 1:5){
   cv.error.10[i]=cv.glm(Auto,glm.fit,K=10)$delta[1]
   }
 print(cv.error.10)# This is the value of CV_k 
-
+plot(cv.error.10)
 
 
 

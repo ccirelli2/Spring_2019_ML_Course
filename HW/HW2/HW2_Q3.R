@@ -392,6 +392,177 @@ apply the LOOCV and K-Fold CV to our logistic regression, LDA and QDA models.
       to LOOCV and K-fold CV?
 
 '
+####################################################################################
+
+'DATA PREP-------------------------------------------------------------------------------------------------'
+
+#LIBRARIES
+rm(list=ls())
+library(boot)
+library(caret)
+
+# DATA (note we use the entire dataset for LOOCV)
+hr_data = read.csv('/home/ccirelli2/Desktop/GSU/2019_Spring/ML_Course/HW/HW2/HeartData.csv')
+
+# DATA  Convert sex, cp, fbs, slope, exang, ca and thal to categorical variables. 
+data.cat             = hr_data
+data.cat$sex          = factor(data.cat$sex)
+data.cat$cp          = factor(data.cat$cp)
+data.cat$fbs         = factor(data.cat$fbs)
+data.cat$slope       = factor(data.cat$slope)
+data.cat$exang       = factor(data.cat$exang)
+data.cat$ca          = factor(data.cat$ca)
+data.cat$thal        = factor(data.cat$thal)
+data.cat$num         = factor(data.cat$num)
+summary(data.cat)
+
+'PART I:  LOGISTIC REGRESSION------------------------------------------------------------------------------'
+
+# Step1:  Set up training control
+data_ctrl = trainControl(method = 'cv', number = 10, verboseIter = TRUE)
+data_ctrl_loocv = trainControl(method = 'LOOCV', number = 10, verboseIter = TRUE)
+
+# Step2:  Fit Model and pass control parameters to model
+lr.m1.cv =        train(num ~ age + sex + cp + trestbps + chol + fbs + restecg + thalach + exang + oldpeak + slope + ca + thal, # model to fit
+                  data = data.cat,                                                       # data
+                  method = 'glm',                                                        # general linear model
+                  family = 'binomial',                                                   # binomial for logistic regression
+                  trControl = data_ctrl                                                  # pass training control parameters. 
+                  )                                                                      
+
+lr.m1.cv.loocv = train(num ~ age + sex + cp + trestbps + chol + fbs + restecg + thalach + exang + oldpeak + slope + ca + thal, # model to fit
+                       data = data.cat,                                                       # data
+                       method = 'glm',                                                        # general linear model
+                       family = 'binomial',                                                   # binomial for logistic regression
+                       trControl = data_ctrl_loocv                                                  # pass training control parameters. 
+                       )
+
+
+# Step3:  Examine Model Predictions
+lr.m1.cv
+'Generalized Linear Model 
+
+297 samples
+13 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 267, 267, 268, 267, 267, 268, ... 
+
+Resampling results:
+RMSE       Rsquared   MAE      
+0.3348804  0.5389519  0.2124769
+
+RMSE:  Root mean squared error
+'
+
+lr.m1.cv.loocv
+'Resampling results:
+  Accuracy   Kappa    
+  0.8484848  0.6933719
+'
+
+# Step4:  Investigate Final Model
+lr.m1.cv$finalModel
+mean(lr.m1.cv$resample$Rsquared)
+
+# Step5:  Examine Model Predictions (R2) For Each Fold
+lr.m1.cv$results
+plot(lr.m1.cv$resample$RMSE, type='bar')
+plot(lr.m1.cv$resample$Rsquared, type ='bar')
+'  RMSE      Rsquared       MAE Resample
+1  0.3834342 0.3760102 0.2551092   Fold01
+2  0.2462384 0.7679812 0.1418298   Fold02
+3  0.2883371 0.6654906 0.1819425   Fold03
+4  0.3843226 0.4146836 0.2703684   Fold04
+5  0.2544984 0.6929842 0.1385979   Fold05
+6  0.4383896 0.2876839 0.2712754   Fold06
+7  0.2951954 0.6752157 0.1955739   Fold07
+8  0.4287678 0.3222896 0.2793528   Fold08
+9  0.3222558 0.5595530 0.2296693   Fold09
+10 0.3073651 0.6276266 0.1610502   Fold10
+'
+
+
+'LINEAR DISCRIMINATION ANALYSIS-------------------------------------------------'
+data_ctrl = trainControl(method = 'cv', number = 10, verboseIter = TRUE)
+
+lda.m1.cv =        train(num ~., # model to fit
+                         data = data.cat,                                                       # data
+                         method = 'lda',                                                        # general linear model
+                         family = 'binomial',                                                   # binomial for logistic regression
+                         trControl = data_ctrl                                                  # pass training control parameters. 
+                         )                                                                      
+
+lda.m1.cv$results
+
+
+lda.m1.cv.loocv =        train(num ~., # model to fit
+                         data = data.cat,                                                       # data
+                         method = 'lda',                                                        # general linear model
+                         family = 'binomial',                                                   # binomial for logistic regression
+                         trControl = data_ctrl_loocv                                                  # pass training control parameters. 
+                         )                                                                      
+
+lda.m1.cv.loocv
+'  Accuracy   Kappa    
+  0.8451178  0.6863924'
+
+
+'QUADRATIC DISCRIMINATION ANALYSIS-------------------------------------------------'
+data_ctrl = trainControl(method = 'cv', number = 10, verboseIter = TRUE)
+
+qda.m1.cv =        train(num ~., # model to fit
+                         data = data.cat,                                                       # data
+                         method = 'qda',                                                        # general linear model
+                         family = 'binomial',                                                   # binomial for logistic regression
+                         trControl = data_ctrl                                                  # pass training control parameters. 
+                          )
+
+qda.m1.cv.loocv =        train(num ~., # model to fit
+                         data = data.cat,                                                       # data
+                         method = 'qda',                                                        # general linear model
+                         family = 'binomial',                                                   # binomial for logistic regression
+                         trControl = data_ctrl_loocv                                                  # pass training control parameters. 
+                          )                                                                      
+qda.m1.cv.loocv
+'  Accuracy   Kappa    
+  0.8080808  0.6124224'
+
+
+
+'RESULTS FROM THE LOGISTIC REGRESSION / LDA / QDA MODELS-------------------------------------'
+lr.m1.cv$results
+lda.m1.cv$results
+qda.m1.cv$results
+'
+> lr.m1.cv$results
+  parameter      RMSE  Rsquared       MAE     RMSESD RsquaredSD      MAESD
+1      none 0.3348804 0.5389519 0.2124769 0.06936803  0.1735635 0.05548378
+> lda.m1.cv$results
+  parameter  Accuracy     Kappa AccuracySD   KappaSD
+1      none 0.8048276 0.6067778 0.09193774 0.1838833
+> qda.m1.cv$results
+  parameter  Accuracy     Kappa AccuracySD  KappaSD
+1      none 0.7911494 0.5774905 0.07905553 0.161233
+
+
+Question:  Is there much difference between the test accuracies of the three models when it comes
+to LOOCV and K-fold CV?
+
+
+
+'
+
+
+
+
+
+
+
+
+
+
 
 
 
